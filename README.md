@@ -50,27 +50,24 @@ _To use this module, add the following call to your code:_
 ### _Basic Usage_
 
 ```tf
-```
-
-
-### _Access Policy_
-
-```tf
-```
-
-### _Log Publishing to CloudWatch Logs_
-
-```tf
-```
-
-### _VPC based ES_
-
-```tf
-module "elasticsearch_domain" {
+module "lambda_function" {
   source = "git::https://github.com/nitinda/terraform-module-aws-lambda-function.git?ref=master"
 
   providers = {
     aws = aws.services
+  }
+
+  filename         = "lambda_function_payload.zip"
+  function_name    = "lambda_function_name"
+  role             = aws_iam_role.iam_for_lambda.arn
+  handler          = "exports.test"
+  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  runtime = "nodejs12.x"
+
+  environment {
+    variables = {
+      foo = "bar"
+    }
   }
 
   tags = merge(
@@ -83,6 +80,72 @@ module "elasticsearch_domain" {
 }
 ```
 
+
+### _Lambda Layers_
+
+```tf
+module "lambda_function" {
+  source = "git::https://github.com/nitinda/terraform-module-aws-lambda-function.git?ref=master"
+
+  providers = {
+    aws = aws.services
+  }
+
+  filename         = "lambda_function_payload.zip"
+  function_name    = "lambda_function_name"
+  role             = aws_iam_role.iam_for_lambda.arn
+  handler          = "exports.test"
+  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  runtime = "nodejs12.x"
+
+  environment {
+    variables = {
+      foo = "bar"
+    }
+  }
+
+  tags = merge(
+    var.common_tags,
+    {
+      Environment = "prod"
+      Name        = "lambda-function"
+    }
+  )
+}
+```
+
+### _Lambda File Systems_
+
+```tf
+module "lambda_function" {
+  source = "git::https://github.com/nitinda/terraform-module-aws-lambda-function.git?ref=master"
+
+  providers = {
+    aws = aws.services
+  }
+
+  file_system_config = {
+    # EFS file system access point ARN
+    arn = "${aws_efs_access_point.access_point_for_lambda.arn}"
+    # Local mount path inside the lambda function. Must start with '/mnt/'.
+    local_mount_path = "/mnt/efs"
+  }
+
+  vpc_config = {
+    # Every subnet should be able to reach an EFS mount target in the same Availability Zone. Cross-AZ mounts are not permitted.
+    subnet_ids         = ["${aws_subnet.subnet_for_lambda.id}"]
+    security_group_ids = ["${aws_security_group.sg_for_lambda.id}"]
+  }
+
+  tags = merge(
+    var.common_tags,
+    {
+      Environment = "prod"
+      Name        = "lambda-function"
+    }
+  )
+}
+```
 
 ---
 
