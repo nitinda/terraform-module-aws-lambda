@@ -88,6 +88,7 @@ variable "environment" {
 
 variable "kms_key_arn" {
     description = "Amazon Resource Name (ARN) of the AWS Key Management Service (KMS) key that is used to encrypt environment variables"
+    default     = null
 }
 
 variable "source_code_hash" {
