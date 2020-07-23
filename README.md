@@ -22,7 +22,7 @@ _This module may be used to create_ **_Lambda Function_** _resources in AWS clou
 
 ## _Prerequisites_
 
-_This module needs_ **_Terraform 0.12.19_** _or newer._
+_This module needs_ **_Terraform 0.12.29_** _or newer._
 _You can download the latest Terraform version from_ [here](https://www.terraform.io/downloads.html).
 
 _This module deploys aws services details are in respective feature branches._
