@@ -125,12 +125,13 @@ _The following arguments are supported:_
 
 _In addition to all arguments above, the following attributes are exported:_
 
-* _**arn** - Amazon Resource Name (ARN) of the domain._
-* _**domain\_id** - Unique identifier for the domain._
-* _**domain\_name** - The name of the Elasticsearch domain._
-* _**endpoint** - Domain-specific endpoint used to submit index, search, and data upload requests._
-* _**kibana\_endpoint** - Domain-specific endpoint for kibana without https scheme._
 
+* _**arn** - The Amazon Resource Name (ARN) identifying your Lambda Function._
+* _**invoke\_arn** - The ARN to be used for invoking Lambda Function from API Gateway - to be used in aws\_api\_gateway\_integration's uri._
+* _**version** - Latest published version of your Lambda Function._
+* _**last\_modified** - The date this resource was last modified._
+* _**source\_code\_hash** - Base64-encoded representation of raw SHA-256 sum of the zip file, provided either via filename or s3_* parameters._
+* _**source\_code\_size** - The size in bytes of the function .zip file._
 ---
 
 
