@@ -6,7 +6,7 @@ resource "aws_lambda_function" "lambda_function" {
   function_name     = var.function_name
 
   dynamic "dead_letter_config" {
-    for_each = var.dead_letter_config
+    for_each = var.dead_letter_config == {} ? [] : [var.dead_letter_config]
     content {
       target_arn = dead_letter_config.value.target_arn
     }
@@ -22,7 +22,7 @@ resource "aws_lambda_function" "lambda_function" {
   reserved_concurrent_executions = var.reserved_concurrent_executions
 
   dynamic "vpc_config" {
-    for_each = var.vpc_config
+    for_each = var.vpc_config == {} ? [] : [var.vpc_config]
     content {
       security_group_ids = vpc_config.value.security_group_ids
       subnet_ids         = vpc_config.value.subnet_ids
@@ -30,7 +30,7 @@ resource "aws_lambda_function" "lambda_function" {
   }
 
   dynamic "environment" {
-    for_each = var.environment
+    for_each = var.environment == {} ? [] : [var.environment]
     content {
       variables = lookup(environment.value, "variables", null)
     }
@@ -42,7 +42,7 @@ resource "aws_lambda_function" "lambda_function" {
   tags             = var.tags
   
   dynamic "file_system_config" {
-    for_each = var.file_system_config
+    for_each = var.file_system_config == {} ? [] : [var.file_system_config]
     content {
       arn              = file_system_config.value.arn
       local_mount_path = file_system_config.value.local_mount_path
