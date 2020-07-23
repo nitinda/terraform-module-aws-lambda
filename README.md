@@ -80,40 +80,6 @@ module "lambda_function" {
 }
 ```
 
-
-### _Lambda Layers_
-
-```tf
-module "lambda_function" {
-  source = "git::https://github.com/nitinda/terraform-module-aws-lambda-function.git?ref=master"
-
-  providers = {
-    aws = aws.services
-  }
-
-  filename         = "lambda_function_payload.zip"
-  function_name    = "lambda_function_name"
-  role             = aws_iam_role.iam_for_lambda.arn
-  handler          = "exports.test"
-  source_code_hash = filebase64sha256("lambda_function_payload.zip")
-  runtime = "nodejs12.x"
-
-  environment {
-    variables = {
-      foo = "bar"
-    }
-  }
-
-  tags = merge(
-    var.common_tags,
-    {
-      Environment = "prod"
-      Name        = "lambda-function"
-    }
-  )
-}
-```
-
 ### _Lambda File Systems_
 
 ```tf
